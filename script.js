@@ -7,21 +7,22 @@ document.addEventListener('DOMContentLoaded', function() {
 function initializeApp() {
     // Navbar scroll effect
     initNavbar();
-    
+
     // Smooth scrolling
     initSmoothScroll();
-    
+
     // Practice areas
     renderPracticeAreas();
-    
+
     // Modal functionality
     initModal();
-    
+
     // Scroll reveal animations
     initScrollReveal();
-    
-    // Form submission
-    initForm();
+
+    // Business hours
+    initBusinessHours();
+
 }
 
 // Navbar Scroll Effect
@@ -178,12 +179,12 @@ function initScrollReveal() {
     const revealElements = document.querySelectorAll(
         '.reveal-up, .reveal-down, .reveal-left, .reveal-right'
     );
-    
+
     const observerOptions = {
         threshold: 0.1,
         rootMargin: '0px 0px -100px 0px'
     };
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -192,33 +193,76 @@ function initScrollReveal() {
             }
         });
     }, observerOptions);
-    
+
     revealElements.forEach(element => {
         observer.observe(element);
     });
 }
 
-// Form Submission
-function initForm() {
-    const form = document.getElementById('contactForm');
-    
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        
-        // Get form data
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData);
-        
-        // Here you would typically send the data to a server
-        console.log('Form submitted:', data);
-        
-        // Show success message (you can customize this)
-        alert('Thank you for your message! We will get back to you soon.');
-        
-        // Reset form
-        form.reset();
+// Business Hours
+function initBusinessHours() {
+    const hoursToggle = document.getElementById('hoursToggle');
+    const hoursDropdown = document.getElementById('hoursDropdown');
+    const hoursStatus = document.getElementById('hoursStatus');
+    const currentHours = document.getElementById('currentHours');
+
+    if (!hoursToggle || !hoursDropdown) return;
+
+    // Business hours configuration
+    const businessHours = {
+        0: { day: 'Sun', hours: 'Closed', open: false },      // Sunday
+        1: { day: 'Mon', hours: '09:00 am – 05:00 pm', open: true },
+        2: { day: 'Tue', hours: '09:00 am – 05:00 pm', open: true },
+        3: { day: 'Wed', hours: '09:00 am – 05:00 pm', open: true },
+        4: { day: 'Thu', hours: '09:00 am – 05:00 pm', open: true },
+        5: { day: 'Fri', hours: '09:00 am – 05:00 pm', open: true },
+        6: { day: 'Sat', hours: 'Closed', open: false }       // Saturday
+    };
+
+    // Get current day (0 = Sunday, 6 = Saturday)
+    const today = new Date().getDay();
+    const todayInfo = businessHours[today];
+
+    // Update current status
+    if (todayInfo.open) {
+        hoursStatus.textContent = 'Open today';
+        currentHours.textContent = todayInfo.hours;
+    } else {
+        hoursStatus.textContent = 'Closed today';
+        currentHours.textContent = todayInfo.hours;
+    }
+
+    // Highlight today in the dropdown
+    const hoursDays = hoursDropdown.querySelectorAll('.hours-day');
+    hoursDays.forEach((dayEl, index) => {
+        // Map index to day of week (Mon=0 in our list, but Mon=1 in Date)
+        const dayMapping = [1, 2, 3, 4, 5, 6, 0]; // Mon, Tue, Wed, Thu, Fri, Sat, Sun
+        if (dayMapping[index] === today) {
+            dayEl.classList.add('today');
+        }
+    });
+
+    // Toggle dropdown
+    hoursToggle.addEventListener('click', () => {
+        hoursToggle.classList.toggle('active');
+        hoursDropdown.classList.toggle('active');
+
+        // Re-initialize icons after toggle
+        setTimeout(() => {
+            lucide.createIcons();
+        }, 100);
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!hoursToggle.contains(e.target) && !hoursDropdown.contains(e.target)) {
+            hoursToggle.classList.remove('active');
+            hoursDropdown.classList.remove('active');
+        }
     });
 }
+
+
 
 // Utility function to handle image loading errors
 function handleImageError(img) {

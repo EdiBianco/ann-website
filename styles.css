@@ -795,6 +795,101 @@ img {
     font-family: serif;
 }
 
+/* Business Hours */
+.business-hours {
+    position: relative;
+}
+
+.hours-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    padding: 0.75rem;
+    border: 1px solid rgba(9, 50, 105, 0.1);
+    border-radius: 0.5rem;
+    transition: all 0.3s ease;
+    background-color: white;
+}
+
+.hours-toggle:hover {
+    border-color: rgba(9, 50, 105, 0.2);
+    background-color: rgba(9, 50, 105, 0.02);
+}
+
+.hours-current {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.hours-status {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--primary-blue);
+}
+
+.hours-time {
+    font-size: 1rem;
+    color: var(--slate-900);
+    font-family: serif;
+}
+
+.hours-arrow {
+    width: 20px;
+    height: 20px;
+    color: var(--primary-blue);
+    transition: transform 0.3s ease;
+}
+
+.hours-toggle.active .hours-arrow {
+    transform: rotate(180deg);
+}
+
+.hours-dropdown {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    margin-top: 0.75rem;
+    border: 1px solid rgba(9, 50, 105, 0.1);
+    border-radius: 0.5rem;
+    background-color: white;
+}
+
+.hours-dropdown.active {
+    max-height: 400px;
+}
+
+.hours-day {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(9, 50, 105, 0.05);
+}
+
+.hours-day:last-child {
+    border-bottom: none;
+}
+
+.hours-day.today {
+    background-color: rgba(9, 50, 105, 0.05);
+    font-weight: 600;
+}
+
+.day-name {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--slate-900);
+    min-width: 3rem;
+}
+
+.day-hours {
+    font-size: 0.95rem;
+    color: var(--slate-600);
+    font-family: serif;
+}
+
 .contact-form-wrapper {
     /* Container for form */
 }
